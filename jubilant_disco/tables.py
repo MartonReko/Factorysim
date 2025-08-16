@@ -1,7 +1,6 @@
 from typing import override
 from sqlmodel import Relationship, SQLModel, Session
 
-from jubilant_disco.db import engine
 from jubilant_disco.models import (
     ActorBase,
     GoodBase,
@@ -26,6 +25,7 @@ class Actor(ActorBase, table=True):
         actor.money += money
         self.money -= money
 
+        from jubilant_disco.db import engine
         with Session(engine) as session:
             session.add_all(models)
             session.commit()
