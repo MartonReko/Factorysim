@@ -26,6 +26,7 @@ class Actor(ActorBase, table=True):
         self.money -= money
 
         from jubilant_disco.db import engine
+
         with Session(engine) as session:
             session.add_all(models)
             session.commit()
@@ -67,7 +68,7 @@ class Occupation(OccupationBase, table=True):
 
 class Person(PersonBase, Observer, table=True):
     occupations: list["Occupation"] | None = Relationship(back_populates="person")
-    
+
     @override
     def update(self, subject: Subject) -> None:
         pass

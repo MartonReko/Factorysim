@@ -1,20 +1,17 @@
 from sqlalchemy.engine.base import Engine
-
-
 from sqlmodel import SQLModel, Session, create_engine
-
 
 engine: Engine
 if __name__ == "__main__":
     from jubilant_disco.tables import (
-        Actor,
+        # Actor,
         Good,
         RecipeItem,
         Recipe,
         Occupation,
         Person,
         Workplace,
-        Product,
+        # Product,
     )
 
     sqlite_file_name = "database.db"
@@ -57,7 +54,7 @@ if __name__ == "__main__":
         session.add_all(list(workplaces.values()))
         session.commit()
 
-        people: list[Person] = [Person() for i in range(0, 10)]
+        people: list[Person] = [Person() for _i in range(0, 10)]
         session.add_all(people)
         session.commit()
 

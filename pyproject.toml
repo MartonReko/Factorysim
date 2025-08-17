@@ -5,7 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "basedpyright>=1.31.2",
     "fastapi[standard]>=0.116.1",
+    "flake8>=7.3.0",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
     "sqlmodel>=0.0.24",
 ]
 
@@ -19,3 +23,7 @@ jubilant-disco = { workspace = true }
 dev = [
     "jubilant_disco",
 ]
+    
+[tool.basedpyright]
+reportImportCycles = false
+failOnWarnings = false
