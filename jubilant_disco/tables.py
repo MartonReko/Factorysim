@@ -12,24 +12,28 @@ from jubilant_disco.models import (
     WorkplaceBase,
 )
 from jubilant_disco.observer import Observer, Subject
+from jubilant_disco.dbManager import dbManager
 
 
 class Actor(ActorBase, table=True):
     products: list["Product"] | None = Relationship(back_populates="actor")
 
     def pay(self, actor: "Actor", money: int) -> None | bool:
-        models: list[SQLModel] = [actor, self]
         if self.money < money:
             return False
 
         actor.money += money
         self.money -= money
 
+<<<<<<< HEAD
         from jubilant_disco.db import engine
 
         with Session(engine) as session:
             session.add_all(models)
             session.commit()
+=======
+        dbManager.writeToDb([actor, self])
+>>>>>>> e87e543 (dbManager for simpler database commits)
 
     def buy(self, product: "Product") -> None:
         pass
