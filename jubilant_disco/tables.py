@@ -1,5 +1,5 @@
 from typing import override
-from sqlmodel import Relationship, SQLModel, Session
+from sqlmodel import Relationship
 
 from jubilant_disco.models import (
     ActorBase,
@@ -25,15 +25,7 @@ class Actor(ActorBase, table=True):
         actor.money += money
         self.money -= money
 
-<<<<<<< HEAD
-        from jubilant_disco.db import engine
-
-        with Session(engine) as session:
-            session.add_all(models)
-            session.commit()
-=======
         dbManager.writeToDb([actor, self])
->>>>>>> e87e543 (dbManager for simpler database commits)
 
     def buy(self, product: "Product") -> None:
         pass
