@@ -11,7 +11,7 @@ from jubilant_disco.models import (
     RecipeItemBase,
     WorkplaceBase,
 )
-from jubilant_disco.observer import Observer, Subject
+from jubilant_disco.observer import Observer, TimePassed
 
 
 class Actor(ActorBase, table=True):
@@ -70,13 +70,18 @@ class Person(PersonBase, Observer, table=True):
     occupations: list["Occupation"] | None = Relationship(back_populates="person")
 
     @override
-    def update(self, subject: Subject) -> None:
-        pass
+    def update(self, subject: TimePassed) -> None:
+        self.hunger -= subject.speed
+        self.happiness -= subject.speed
 
 
-class Workplace(WorkplaceBase, table=True):
+class Workplace(WorkplaceBase, Observer, table=True):
     recipe: "Recipe" = Relationship(back_populates="workplaces")
     occupations: list["Occupation"] | None = Relationship(back_populates="workplace")
 
     def produce(self) -> None:
         pass
+
+    @override
+    def update(self, subject: TimePassed) -> None:
+        self.produce()

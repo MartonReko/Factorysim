@@ -1,6 +1,8 @@
 from sqlalchemy.engine.base import Engine
 from sqlmodel import SQLModel, Session, create_engine
 
+from jubilant_disco.observer import TimePassed
+
 engine: Engine
 if __name__ == "__main__":
     from jubilant_disco.tables import (
@@ -64,3 +66,13 @@ if __name__ == "__main__":
 
         session.add_all(occupations)
         session.commit()
+        
+        timePassed : TimePassed = TimePassed()
+        for person in people:
+            timePassed.attach(person)
+        for workplace in workplaces.values():
+            timePassed.attach(workplace)
+        
+        timePassed.notify()
+        timePassed.notify()
+        timePassed.notify()

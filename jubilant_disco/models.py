@@ -40,10 +40,10 @@ class OccupationBase(SQLModel):
 
 class PersonBase(ActorBase):
     id: int | None = Field(default=None, primary_key=True)
-    name: str = str(id)
+    name: str = Field(default="")
     birthYear: int = 0
-    happiness: int = Field(default=100)
-    hunger: int = Field(default=0)
+    happiness: int = Field(default=0)
+    hunger: int = Field(default=100)
 
 
 class WorkplaceBase(ActorBase):
