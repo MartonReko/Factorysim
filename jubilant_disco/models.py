@@ -1,9 +1,8 @@
 from enum import Enum
 from typing import override
 
-from sqlmodel import SQLModel, Field, Session
-
-from jubilant_disco.observer import Observer, TimePassed
+from sqlmodel import SQLModel, Field
+from jubilant_disco.observer import Subject, TimePassed, Observer
 
 
 class ActorBase(SQLModel):
@@ -17,7 +16,7 @@ class ActorBase(SQLModel):
         actor.money += money
         self.money -= money
 
-    def buy(self, product: "ProductBase") -> None:
+    def buy(self, _product: "ProductBase") -> None:
         pass
 
 
@@ -59,9 +58,10 @@ class PersonBase(ActorBase, Observer):
     hunger: int = Field(default=100)
 
     @override
-    def update(self, subject: TimePassed) -> None:
-        self.hunger -= subject.speed
-        self.happiness -= subject.speed
+    def update(self, subject: Subject) -> None:
+        if isinstance(subject, TimePassed):
+            self.hunger -= subject.speed
+            self.happiness -= subject.speed
 
 
 class WorkplaceBase(ActorBase, Observer):
@@ -74,8 +74,9 @@ class WorkplaceBase(ActorBase, Observer):
         pass
 
     @override
-    def update(self, subject: TimePassed) -> None:
-        self.produce()
+    def update(self, subject: Subject) -> None:
+        if isinstance(subject, TimePassed):
+            self.produce()
 
 
 class ProductBase(SQLModel):
@@ -85,7 +86,7 @@ class ProductBase(SQLModel):
     quantity: int = Field()
     price: float | None = Field(default=0)
 
-    def split(self, quantity: int) -> None:
+    def split(self, _quantity: int) -> None:
         pass
 
     def use(self) -> None:

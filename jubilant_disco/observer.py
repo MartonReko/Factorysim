@@ -19,14 +19,6 @@ class Subject(ABC):
         pass
 
 
-class Observer(ABC):
-    def update(self, subject: Subject) -> None:
-        pass
-
-    def update(self, subject: "TimePassed") -> None:
-        pass
-
-
 class TimePassed(Subject):
     speed: int = 1
 
@@ -34,3 +26,9 @@ class TimePassed(Subject):
     def notify(self) -> None:
         for obs in self.observers:
             obs.update(self)
+
+
+class Observer(ABC):
+    @abstractmethod
+    def update(self, subject: Subject) -> None:
+        pass
