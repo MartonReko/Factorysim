@@ -1,5 +1,5 @@
 from typing import override
-from sqlmodel import Relationship, SQLModel, Session
+from sqlmodel import Relationship
 
 from jubilant_disco.models import (
     ActorBase,
@@ -11,25 +11,21 @@ from jubilant_disco.models import (
     RecipeItemBase,
     WorkplaceBase,
 )
-from jubilant_disco.observer import Observer, TimePassed
+from jubilant_disco.observer import Observer, Subject
+from jubilant_disco.dbManager import dbManager
 
 
 class Actor(ActorBase, table=True):
     products: list["Product"] | None = Relationship(back_populates="actor")
 
     def pay(self, actor: "Actor", money: int) -> None | bool:
-        models: list[SQLModel] = [actor, self]
         if self.money < money:
             return False
 
         actor.money += money
         self.money -= money
 
-        from jubilant_disco.db import engine
-
-        with Session(engine) as session:
-            session.add_all(models)
-            session.commit()
+        dbManager.writeToDb([actor, self])
 
     def buy(self, product: "Product") -> None:
         pass
