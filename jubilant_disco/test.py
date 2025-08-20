@@ -1,14 +1,13 @@
-from operator import contains
-from sqlalchemy import Engine, ScalarResult
-from sqlmodel import SQLModel, Session, create_engine, select
-from sqlmodel.sql.expression import SelectOfScalar
+from sqlalchemy import Engine
+from sqlmodel import Session, SQLModel, create_engine, select
+
 from jubilant_disco.observer import TimePassed
 from jubilant_disco.tables import (
     Good,
-    RecipeItem,
-    Recipe,
     Occupation,
     Person,
+    Recipe,
+    RecipeItem,
     Workplace,
 )
 

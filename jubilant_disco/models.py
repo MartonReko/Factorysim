@@ -1,8 +1,9 @@
 from enum import Enum
 from typing import override
 
-from sqlmodel import SQLModel, Field
-from jubilant_disco.observer import Subject, TimePassed, Observer
+from sqlmodel import Field, SQLModel
+
+from jubilant_disco.observer import Observer, Subject, TimePassed
 
 
 class ActorBase(SQLModel):

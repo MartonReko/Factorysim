@@ -1,9 +1,8 @@
 from fastapi import FastAPI
-from sqlmodel import SQLModel, Session, select
+from sqlmodel import Session, SQLModel, select
 
 from jubilant_disco.db import engine
 from jubilant_disco.tables import Person
-
 
 app = FastAPI()
 

@@ -1,4 +1,4 @@
-from sqlmodel import SQLModel, Session, create_engine
+from sqlmodel import Session, SQLModel, create_engine
 
 from jubilant_disco.observer import TimePassed
 
@@ -12,10 +12,10 @@ if __name__ == "__main__":
     from jubilant_disco.tables import (
         # Actor,
         Good,
-        RecipeItem,
-        Recipe,
         Occupation,
         Person,
+        Recipe,
+        RecipeItem,
         Workplace,
         # Product,
     )
