@@ -1,11 +1,23 @@
 from enum import Enum
+from typing import override
 
 from sqlmodel import SQLModel, Field
+from jubilant_disco.observer import Subject, TimePassed, Observer
 
 
 class ActorBase(SQLModel):
     id: int | None = Field(default=None, primary_key=True)
     money: int = Field(default=0)
+
+    def pay(self, actor: "ActorBase", money: int) -> None | bool:
+        if self.money < money:
+            return False
+
+        actor.money += money
+        self.money -= money
+
+    def buy(self, _product: "ProductBase") -> None:
+        pass
 
 
 class GoodBase(SQLModel):
@@ -38,19 +50,33 @@ class OccupationBase(SQLModel):
     wage: int = Field(default=0)
 
 
-class PersonBase(ActorBase):
+class PersonBase(ActorBase, Observer):
     id: int | None = Field(default=None, primary_key=True)
-    name: str = str(id)
+    name: str = Field(default="")
     birthYear: int = 0
-    happiness: int = Field(default=100)
-    hunger: int = Field(default=0)
+    happiness: int = Field(default=0)
+    hunger: int = Field(default=100)
+
+    @override
+    def update(self, subject: Subject) -> None:
+        if isinstance(subject, TimePassed):
+            self.hunger -= subject.speed
+            self.happiness -= subject.speed
 
 
-class WorkplaceBase(ActorBase):
+class WorkplaceBase(ActorBase, Observer):
     id: int | None = Field(default=None, primary_key=True)
     recipe_id: int | None = Field(default=None, foreign_key="recipe.id")
     name: str = Field()
     maxWorkers: int = Field(default=0)
+
+    def produce(self) -> None:
+        pass
+
+    @override
+    def update(self, subject: Subject) -> None:
+        if isinstance(subject, TimePassed):
+            self.produce()
 
 
 class ProductBase(SQLModel):
@@ -59,3 +85,9 @@ class ProductBase(SQLModel):
     actor_id: int | None = Field(default=None, foreign_key="actor.id")
     quantity: int = Field()
     price: float | None = Field(default=0)
+
+    def split(self, _quantity: int) -> None:
+        pass
+
+    def use(self) -> None:
+        pass

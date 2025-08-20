@@ -1,7 +1,13 @@
-from sqlalchemy.engine.base import Engine
 from sqlmodel import SQLModel, Session, create_engine
 
-engine: Engine
+from jubilant_disco.observer import TimePassed
+
+sqlite_file_name = "database.db"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
+
+connect_args = {"check_same_thread": False}
+engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
+
 if __name__ == "__main__":
     from jubilant_disco.tables import (
         # Actor,
@@ -14,11 +20,6 @@ if __name__ == "__main__":
         # Product,
     )
 
-    sqlite_file_name = "database.db"
-    sqlite_url = f"sqlite:///{sqlite_file_name}"
-
-    connect_args = {"check_same_thread": False}
-    engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
 
     with Session(engine) as session:
         SQLModel.metadata.drop_all(engine)
@@ -54,7 +55,7 @@ if __name__ == "__main__":
         session.add_all(list(workplaces.values()))
         session.commit()
 
-        people: list[Person] = [Person() for _i in range(0, 10)]
+        people: list[Person] = [Person(money=10) for _i in range(0, 10)]
         session.add_all(people)
         session.commit()
 
@@ -64,3 +65,16 @@ if __name__ == "__main__":
 
         session.add_all(occupations)
         session.commit()
+        
+        timePassed : TimePassed = TimePassed()
+        for person in people:
+            timePassed.attach(person)
+        for workplace in workplaces.values():
+            timePassed.attach(workplace)
+        
+        people[0].pay(people[1], 1)
+        session.add_all([people[0], people[1]])
+        session.commit()
+        
+#        timePassed.notify()
+

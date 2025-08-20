@@ -1,23 +1,32 @@
 from abc import ABC, abstractmethod
+from typing import override
 
 
 class Subject(ABC):
+    observers: list["Observer"] = []
 
-    @abstractmethod
+    def __init__(self) -> None:
+        self.observers = []
+
     def attach(self, observer: "Observer") -> None:
-        pass
+        self.observers.append(observer)
 
-    @abstractmethod
     def detach(self, observer: "Observer") -> None:
-        pass
+        self.observers.remove(observer)
 
     @abstractmethod
+    def notify(self) -> None: ...
+
+
+class TimePassed(Subject):
+    speed: int = 1
+
+    @override
     def notify(self) -> None:
-        pass
+        for obs in self.observers:
+            obs.update(self)
 
 
 class Observer(ABC):
-
     @abstractmethod
-    def update(self, subject: Subject) -> None:
-        pass
+    def update(self, subject: Subject) -> None: ...
