@@ -20,7 +20,6 @@ if __name__ == "__main__":
         # Product,
     )
 
-
     with Session(engine) as session:
         SQLModel.metadata.drop_all(engine)
         SQLModel.metadata.create_all(engine)
@@ -65,16 +64,15 @@ if __name__ == "__main__":
 
         session.add_all(occupations)
         session.commit()
-        
-        timePassed : TimePassed = TimePassed()
+
+        timePassed: TimePassed = TimePassed()
         for person in people:
             timePassed.attach(person)
         for workplace in workplaces.values():
             timePassed.attach(workplace)
-        
+
         people[0].pay(people[1], 1)
         session.add_all([people[0], people[1]])
         session.commit()
-        
-#        timePassed.notify()
 
+#        timePassed.notify()
