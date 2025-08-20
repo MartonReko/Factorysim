@@ -5,22 +5,25 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v5
-      - name: Install Python
-        uses: actions/setup-python@v5
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-python@v5
         with:
           python-version-file: "pyproject.toml"
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
-      - name: Install dependencies
-        run: uv sync --all-extras --dev
-      - name: Run Ruff
-        uses: astral-sh/ruff-action@v3
+      - run: uv sync --all-extras --dev
+      - uses: astral-sh/ruff-action@v3
         with:
           version: "latest"
       - run: ruff check --fix
       - run: ruff format
-      - name: Run basedpyright
-        run: uv run basedpyright # no additional arguments required. it automatically detects if it's running in a github action
+      - run: uv run basedpyright
+      - uses: stefanzweifel/git-auto-commit-action@v6
