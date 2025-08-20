@@ -20,4 +20,8 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync --all-extras --dev
+      - uses: astral-sh/ruff-action@v3
+        with:
+          version: "latest"
+      - run: ruff check
       - run: uv run basedpyright
