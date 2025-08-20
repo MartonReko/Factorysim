@@ -27,3 +27,4 @@ dev = [
 [tool.basedpyright]
 reportImportCycles = false
 failOnWarnings = false
+reportAny = false

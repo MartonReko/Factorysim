@@ -15,8 +15,7 @@ class Subject(ABC):
         self.observers.remove(observer)
 
     @abstractmethod
-    def notify(self) -> None:
-        pass
+    def notify(self) -> None: ...
 
 
 class TimePassed(Subject):
@@ -30,5 +29,4 @@ class TimePassed(Subject):
 
 class Observer(ABC):
     @abstractmethod
-    def update(self, subject: Subject) -> None:
-        pass
+    def update(self, subject: Subject) -> None: ...
