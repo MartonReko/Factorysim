@@ -7,17 +7,16 @@ sqlite_url = f"sqlite:///{sqlite_file_name}"
 
 connect_args = {"check_same_thread": False}
 engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
+time_passed: TimePassed = TimePassed()
 
 if __name__ == "__main__":
     from jubilant_disco.tables import (
-        # Actor,
         Good,
         Occupation,
         Person,
         Recipe,
         RecipeItem,
         Workplace,
-        # Product,
     )
 
     with Session(engine) as session:
@@ -65,14 +64,11 @@ if __name__ == "__main__":
         session.add_all(occupations)
         session.commit()
 
-        timePassed: TimePassed = TimePassed()
         for person in people:
-            timePassed.attach(person)
+            time_passed.attach(person)
         for workplace in workplaces.values():
-            timePassed.attach(workplace)
+            time_passed.attach(workplace)
 
         people[0].pay(people[1], 1)
         session.add_all([people[0], people[1]])
         session.commit()
-
-#        timePassed.notify()

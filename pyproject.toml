@@ -29,3 +29,11 @@ dev = [
 reportImportCycles = false
 failOnWarnings = false
 reportAny = false
+reportExplicitAny = false
+
+[tool.pytest.ini_options]
+minversion = "8.4.1"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]

@@ -10,7 +10,6 @@ from jubilant_disco.models import (
     RecipeItemBase,
     WorkplaceBase,
 )
-from jubilant_disco.observer import Observer
 
 
 class Actor(ActorBase, table=True):
@@ -46,6 +45,6 @@ class Person(PersonBase, table=True):
     occupations: list["Occupation"] | None = Relationship(back_populates="person")
 
 
-class Workplace(WorkplaceBase, Observer, table=True):
+class Workplace(WorkplaceBase, table=True):
     recipe: "Recipe" = Relationship(back_populates="workplaces")
     occupations: list["Occupation"] | None = Relationship(back_populates="workplace")
