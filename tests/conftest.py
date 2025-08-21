@@ -1,7 +1,6 @@
 import pytest
 from sqlmodel import Session, SQLModel, StaticPool, create_engine
 
-from jubilant_disco.observer import TimePassed
 from jubilant_disco.tables import (
     Good,
     Occupation,
@@ -67,7 +66,3 @@ def create_db_fixture(session: Session):
     session.commit()
 
     timePassed: TimePassed = TimePassed()
-    for person in people:
-        timePassed.attach(person)
-    for workplace in workplaces.values():
-        timePassed.attach(workplace)

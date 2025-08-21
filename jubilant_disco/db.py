@@ -1,74 +1,20 @@
-from sqlmodel import Session, SQLModel, create_engine
+from sqlalchemy import Engine
+from sqlmodel import StaticPool, create_engine
 
 from jubilant_disco.observer import TimePassed
 
-sqlite_file_name = "database.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
 
-connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
-time_passed: TimePassed = TimePassed()
-
-if __name__ == "__main__":
-    from jubilant_disco.tables import (
-        Good,
-        Occupation,
-        Person,
-        Recipe,
-        RecipeItem,
-        Workplace,
-    )
-
-    with Session(engine) as session:
-        SQLModel.metadata.drop_all(engine)
-        SQLModel.metadata.create_all(engine)
-        goods: dict[str, Good] = {
-            "wheat": Good(name="wheat"),
-            "bread": Good(name="bread"),
-        }
-        session.add_all(list(goods.values()))
-        session.commit()
-
-        recipes: dict[str, Recipe] = {"bread": Recipe(name="bread")}
-        session.add_all(list(recipes.values()))
-        session.commit()
-
-        bread_recipe: list[RecipeItem] = [
-            RecipeItem(
-                good=goods["wheat"],
-                recipe=recipes["bread"],
-            ),
-            RecipeItem(
-                good=goods["bread"],
-                recipe=recipes["bread"],
-                type=RecipeItem.Type.OUTPUT,
-            ),
-        ]
-        session.add_all(bread_recipe)
-        session.commit()
-
-        workplaces: dict[str, Workplace] = {
-            "bread factory": Workplace(name="bread factory", recipe=recipes["bread"])
-        }
-        session.add_all(list(workplaces.values()))
-        session.commit()
-
-        people: list[Person] = [Person(money=10) for _i in range(0, 10)]
-        session.add_all(people)
-        session.commit()
-
-        occupations: list[Occupation] = [
-            Occupation(person=p, workplace=workplaces["bread factory"]) for p in people
-        ]
-
-        session.add_all(occupations)
-        session.commit()
-
-        for person in people:
-            time_passed.attach(person)
-        for workplace in workplaces.values():
-            time_passed.attach(workplace)
-
-        people[0].pay(people[1], 1)
-        session.add_all([people[0], people[1]])
-        session.commit()
+class Db:
+    def __init__(self, _file_name: str = "") -> None:
+        time_passed: TimePassed = TimePassed()
+        file_name: str = _file_name
+        url: str = f"sqlite:///{file_name}"
+        connect_args: dict[str, bool] = {"check_same_thread": False}
+        engine: Engine = create_engine(url=url, echo=True, connect_args=connect_args)
+        if file_name == "":
+            engine = create_engine(
+                url="sqlite://",
+                echo=True,
+                connect_args={"check_same_thread": False},
+                poolclass=StaticPool,
+            )
