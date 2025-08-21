@@ -24,7 +24,7 @@ jobs:
             - uses: astral-sh/ruff-action@v3
               with:
                   version: latest
-            - run: ruff check --fix
+            - run: ruff check --fix --check --select I
             - run: ruff format
             - run: uv run basedpyright
             - uses: stefanzweifel/git-auto-commit-action@v6

@@ -1,6 +1,5 @@
 import pytest
-from sqlalchemy import Engine
-from sqlmodel import Session, SQLModel, StaticPool, create_engine, select
+from sqlmodel import Session, SQLModel, StaticPool, create_engine
 
 from jubilant_disco.observer import TimePassed
 from jubilant_disco.tables import (
@@ -72,10 +71,3 @@ def create_db_fixture(session: Session):
         timePassed.attach(person)
     for workplace in workplaces.values():
         timePassed.attach(workplace)
-
-    _ = people[0].pay(people[1], 1)
-    session.add_all([people[0], people[1]])
-    session.commit()
-
-
-1
