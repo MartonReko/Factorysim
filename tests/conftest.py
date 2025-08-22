@@ -19,7 +19,7 @@ def session_fixture():
 
 
 @pytest.fixture(name="create_db")
-def create_db_fixture(session: Session):
+def create_db_fixture(session: Session) -> None:
     goods: dict[str, Good] = {
         "wheat": Good(name="wheat"),
         "bread": Good(name="bread"),

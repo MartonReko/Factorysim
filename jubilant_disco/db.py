@@ -1,12 +1,9 @@
 from sqlalchemy import Engine
 from sqlmodel import SQLModel, StaticPool, create_engine
 
-from jubilant_disco.observer import TimePassed
-
 
 class Db:
     def __init__(self, _file_name: str = "") -> None:
-        self.time_passed: TimePassed = TimePassed()
         self.file_name: str = _file_name
         self.url: str = f"sqlite:///{self.file_name}"
         self.connect_args: dict[str, bool] = {"check_same_thread": False}

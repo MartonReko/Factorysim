@@ -3,7 +3,7 @@ from sqlmodel import Session, select
 from jubilant_disco.tables import Person
 
 
-def test_pay(session: Session):
+def test_pay(session: Session, create_db: None) -> None:
     selPerson1 = select(Person).where(Person.id == 1)
     person1 = session.exec(selPerson1).first()
     assert person1 is not None

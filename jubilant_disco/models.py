@@ -54,7 +54,7 @@ class OccupationBase(SQLModel):
 class PersonBase(ActorBase, Observer):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(default="")
-    birthYear: int = 0
+    birth_year: int = 0
     happiness: int = Field(default=0)
     hunger: int = Field(default=100)
 
@@ -69,7 +69,7 @@ class WorkplaceBase(ActorBase, Observer):
     id: int | None = Field(default=None, primary_key=True)
     recipe_id: int | None = Field(default=None, foreign_key="recipe.id")
     name: str = Field()
-    maxWorkers: int = Field(default=0)
+    max_workers: int = Field(default=0)
 
     def produce(self) -> None:
         pass
