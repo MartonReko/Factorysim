@@ -1,15 +1,14 @@
+import weakref
 from abc import ABC, abstractmethod
 from typing import override
 
 
 class Subject(ABC):
-    observers: list["Observer"] = []
-
     def __init__(self) -> None:
-        self.observers = []
+        self.observers: weakref.WeakSet[Observer] = weakref.WeakSet()
 
     def attach(self, observer: "Observer") -> None:
-        self.observers.append(observer)
+        self.observers.add(observer)
 
     def detach(self, observer: "Observer") -> None:
         self.observers.remove(observer)
