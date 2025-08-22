@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, override
+from typing import override
 
 from sqlmodel import Field, SQLModel
 
@@ -58,12 +58,6 @@ class PersonBase(ActorBase, Observer):
     happiness: int = Field(default=0)
     hunger: int = Field(default=100)
 
-    def __init__(self, **kwargs: Any):
-        super().__init__(**kwargs)
-        from jubilant_disco import db
-
-        db.time_passed.attach(self)
-
     @override
     def update(self, subject: Subject) -> None:
         if isinstance(subject, TimePassed):
@@ -76,12 +70,6 @@ class WorkplaceBase(ActorBase, Observer):
     recipe_id: int | None = Field(default=None, foreign_key="recipe.id")
     name: str = Field()
     maxWorkers: int = Field(default=0)
-
-    def __init__(self, **kwargs: Any):
-        super().__init__(**kwargs)
-        from jubilant_disco import db
-
-        db.time_passed.attach(self)
 
     def produce(self) -> None:
         pass
