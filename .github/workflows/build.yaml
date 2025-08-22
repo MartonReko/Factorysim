@@ -28,5 +28,5 @@ jobs:
             - run: ruff format --check
 
             - run: uv run basedpyright
-            - run: uv run ptyest
+            - run: uv run pytest
             - uses: stefanzweifel/git-auto-commit-action@v6
